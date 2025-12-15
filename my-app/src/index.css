@@ -1,0 +1,18 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+@import "tailwindcss";
+
+.custom-calendar {
+  font-size: 15px;
+}
+
+.custom-calendar .react-calendar__tile {
+  height: 90px;
+  padding: 6px;
+}
+
+.custom-calendar .react-calendar__month-view__weekdays {
+  font-weight: bold;
+  padding-bottom: 10px;
+}

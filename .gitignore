@@ -1,0 +1,13 @@
+# Node modules
+server/node_modules/
+my-app/node_modules/
+
+# Environment variables
+server/.env
+my-app/.env
+
+# React build
+my-app/build/
+
+# OS files
+.DS_Store
