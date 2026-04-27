@@ -13,7 +13,7 @@ import TermsOfService from "./pages/Terms-of-service";
 import ProductivityGuides from "./components/ProductivityGuide";
 import SuccessStories from "./pages/SuccessStories";
 import PricingPage from "./pages/Pricing";
-import ReportsPage from "./pages/ReportsPAge";
+import ReportsPage from "./pages/ReportsPage";
 import Layout from "./layout";
 export default function App() {
   return (
