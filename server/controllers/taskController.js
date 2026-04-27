@@ -23,10 +23,7 @@ export const getTasks = async (req, res) => {
   const { date, month, start, end } = req.query;
 
   try {
-    let query = supabase
-      .from("tasks")
-      .select("*")
-      .eq("user_id", req.user.id);
+    let query = supabase.from("tasks").select("*").eq("user_id", req.user.id);
 
     // 1. Filter by single date
     if (date) {
@@ -35,8 +32,15 @@ export const getTasks = async (req, res) => {
 
     // 2. Filter by month (YYYY-MM)
     if (month) {
-      const startOfMonth = `${month}-01`; // e.g., 2025-03-01
-      const endOfMonth = `${month}-31`;   // safe for SQL filtering
+      const [year, monthNum] = month.split("-");
+
+      // Helper: JS Date(year, month, 0) gives the last day of the previous month
+      // We pass monthNum (1-12) as the 'month' and 0 as the 'day' to get the last day of the requested month
+      const lastDay = new Date(year, monthNum, 0).getDate();
+
+      const startOfMonth = `${month}-01`;
+      const endOfMonth = `${month}-${lastDay}`;
+
       query = query
         .gte("date_logged", startOfMonth)
         .lte("date_logged", endOfMonth);
@@ -44,12 +48,12 @@ export const getTasks = async (req, res) => {
 
     // 3. Custom date range
     if (start && end) {
-      query = query
-        .gte("date_logged", start)
-        .lte("date_logged", end);
+      query = query.gte("date_logged", start).lte("date_logged", end);
     }
 
-    const { data, error } = await query.order("date_logged", { ascending: true });
+    const { data, error } = await query.order("date_logged", {
+      ascending: true,
+    });
 
     if (error) throw error;
 
@@ -58,7 +62,6 @@ export const getTasks = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-
 
 export const addTask = async (req, res) => {
   const { title, description, status = "Doing", date_logged } = req.body;
