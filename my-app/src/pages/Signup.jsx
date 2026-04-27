@@ -1,9 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import GoogleIcon from "@mui/icons-material/Google";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import api from "../api/api";
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,7 +11,7 @@ export default function Signup() {
 
   const handleSignup = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/auth/signup", {
+      const res = await api.post("/auth/signup", {
         name,
         email,
         password,
@@ -32,12 +31,12 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden">
-
         {/* Left section */}
         <div className="md:w-1/2 bg-green-700 text-white p-10 flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl font-bold mb-6">Join Us!</h1>
           <p className="mb-6">
-            Sign up and start tracking your tasks, measuring progress, and celebrating success!
+            Sign up and start tracking your tasks, measuring progress, and
+            celebrating success!
           </p>
           <img
             src="https://source.unsplash.com/300x200/?productivity,success"

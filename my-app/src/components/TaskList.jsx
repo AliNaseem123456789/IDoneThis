@@ -1,34 +1,24 @@
-// src/components/TaskList.jsx
 import React from "react";
-import {
-  CheckCircle,
-  PauseCircle,
-  XCircle,
-  Trash2,
-} from "lucide-react";
-
-const statusIcons = {
-  Done: {
-    icon: <CheckCircle className="w-5 h-5 text-green-600" />,
-    label: "Done",
-  },
-  Doing: {
-    icon: <PauseCircle className="w-5 h-5 text-yellow-500" />,
-    label: "Doing",
-  },
-  Delayed: {
-    icon: <XCircle className="w-5 h-5 text-red-500" />,
-    label: "Delayed",
-  },
-};
+import { Paper, IconButton, Typography, Box, Tooltip } from "@mui/material";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const TaskList = ({ tasks, onStatusChange, onDelete }) => {
   if (!tasks.length)
-    return <p className="text-gray-500 text-center mt-6">No tasks logged yet.</p>;
+    return (
+      <Typography
+        variant="body2"
+        sx={{ textAlign: "center", mt: 4, color: "text.secondary" }}
+      >
+        No tasks logged yet.
+      </Typography>
+    );
 
   const formatDateTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString("en-US", {
+    return new Date(timestamp).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       hour: "numeric",
@@ -38,62 +28,85 @@ const TaskList = ({ tasks, onStatusChange, onDelete }) => {
   };
 
   return (
-    <ul className="space-y-3">
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       {tasks.map((task) => (
-        <li
+        <Paper
           key={task.id}
-          className="flex justify-between items-center bg-white border rounded-lg shadow-sm p-3 hover:shadow-md transition"
+          elevation={0}
+          className="flex items-center p-2 border border-gray-200 rounded-md hover:border-gray-300 transition-all"
         >
-          {/* Left Section: status + title */}
-          <div className="flex items-center gap-3">
-            <div className="flex gap-2">
-              <button onClick={() => onStatusChange(task.id, "Done")}>
-                <CheckCircle
-                  className={`w-5 h-5 ${
-                    task.status === "Done"
-                      ? "text-green-600"
-                      : "text-gray-300 hover:text-green-600"
-                  }`}
+          {/* 1. Drag Handle */}
+          <DragIndicatorIcon className="text-gray-300 cursor-grab mx-2" />
+
+          {/* 2. Status Toggles */}
+          <div className="flex gap-1 mr-4">
+            <Tooltip title="Done">
+              <IconButton
+                size="small"
+                onClick={() => onStatusChange(task.id, "Done")}
+              >
+                <CheckCircleIcon
+                  fontSize="small"
+                  className={
+                    task.status === "Done" ? "text-green-600" : "text-gray-200"
+                  }
                 />
-              </button>
-              <button onClick={() => onStatusChange(task.id, "Doing")}>
-                <PauseCircle
-                  className={`w-5 h-5 ${
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Doing">
+              <IconButton
+                size="small"
+                onClick={() => onStatusChange(task.id, "Doing")}
+              >
+                <PauseCircleIcon
+                  fontSize="small"
+                  className={
                     task.status === "Doing"
                       ? "text-yellow-500"
-                      : "text-gray-300 hover:text-yellow-500"
-                  }`}
+                      : "text-gray-200"
+                  }
                 />
-              </button>
-              <button onClick={() => onStatusChange(task.id, "Delayed")}>
-                <XCircle
-                  className={`w-5 h-5 ${
-                    task.status === "Delayed"
-                      ? "text-red-500"
-                      : "text-gray-300 hover:text-red-500"
-                  }`}
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delayed">
+              <IconButton
+                size="small"
+                onClick={() => onStatusChange(task.id, "Delayed")}
+              >
+                <CancelIcon
+                  fontSize="small"
+                  className={
+                    task.status === "Delayed" ? "text-red-500" : "text-gray-200"
+                  }
                 />
-              </button>
-            </div>
-
-            <div>
-              <h4 className="font-medium">{task.title}</h4>
-              <p className="text-xs text-gray-500">
-                {formatDateTime(task.created_at)}
-              </p>
-            </div>
+              </IconButton>
+            </Tooltip>
           </div>
 
-          {/* Right Section: delete */}
-          <button
+          {/* 3. Task Title & Meta */}
+          <div className="flex-grow">
+            <Typography
+              variant="body1"
+              sx={{ fontSize: "14px", fontWeight: 500, color: "#1f2937" }}
+            >
+              {task.title}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              {formatDateTime(task.created_at)}
+            </Typography>
+          </div>
+
+          {/* 4. Delete Action */}
+          <IconButton
+            size="small"
             onClick={() => onDelete(task.id)}
-            className="text-gray-400 hover:text-red-600 transition"
+            className="text-gray-300 hover:text-red-500 transition-colors"
           >
-            <Trash2 className="w-5 h-5" />
-          </button>
-        </li>
+            <DeleteOutlineIcon fontSize="small" />
+          </IconButton>
+        </Paper>
       ))}
-    </ul>
+    </Box>
   );
 };
 

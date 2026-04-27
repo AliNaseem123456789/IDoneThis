@@ -1,5 +1,6 @@
 // src/utils/api.js
-export const API_BASE = "https://idonethis.onrender.com/"; // your backend
+// export const API_BASE = "https://idonethis.onrender.com/"; // your backend
+export const API_BASE = "http://localhost:5000";
 
 export async function apiRequest(endpoint, method = "GET", body = null, token) {
   const headers = {

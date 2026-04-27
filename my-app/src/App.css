@@ -39,18 +39,26 @@
 
 .read-the-docs {
   color: #888;
-}
-
+} /* Add this to your index.css or App.css */
 .custom-calendar {
-  font-size: 15px;
+  border: none !important;
+  font-family: inherit !important;
 }
 
 .custom-calendar .react-calendar__tile {
-  height: 90px;
-  padding: 6px;
+  padding: 1.5em 0.5em !important;
+  border-radius: 8px;
 }
 
-.custom-calendar .react-calendar__month-view__weekdays {
-  font-weight: bold;
-  padding-bottom: 10px;
+.custom-calendar .react-calendar__tile--active {
+  background-color: #ef4444 !important; /* Red to match your theme */
+  color: white !important;
+}
+
+.custom-calendar .react-calendar__tile--now {
+  background: #fee2e2 !important; /* Soft red for today */
+}
+
+.custom-calendar .react-calendar__tile:hover {
+  background-color: #f3f4f6 !important;
 }

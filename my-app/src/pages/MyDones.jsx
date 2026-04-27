@@ -1,41 +1,72 @@
 // src/pages/MyDones.jsx
 import React, { useEffect, useState } from "react";
+// Assumes AddTaskForm and TaskList are already updated to match the row-based UI
 import AddTaskForm from "../components/AddTaskForm";
 import TaskList from "../components/TaskList";
 import { apiRequest } from "../utils/api";
-import {
-  CalendarDays,
-  Download,
-  PlusCircle,
-  User,
-  Users,
-  CheckCircle,
-  PauseCircle,
-  XCircle,
-} from "lucide-react";
 import NavbarLoggedIn from "../components/NavbarLoggedIn";
+
+// UI Components
+import {
+  Button,
+  MenuItem,
+  Select,
+  InputAdornment,
+  IconButton,
+  FormControl,
+} from "@mui/material";
+
+// Icons (Matching the Reference Image)
+import EventIcon from "@mui/icons-material/Event";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import GroupsIcon from "@mui/icons-material/Groups";
+import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 const MyDones = () => {
   const [tasks, setTasks] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [currentDateObj, setCurrentDateObj] = useState(new Date()); // Manage date object
   const [token] = useState(localStorage.getItem("token"));
   const [logType, setLogType] = useState("Personal Log");
   const [statusFilter, setStatusFilter] = useState("All");
   const [showAddForm, setShowAddForm] = useState(false);
+
+  // Derive date string for API and UI
+  const dateStr = currentDateObj.toISOString().split("T")[0];
 
   // ===== Fetch tasks =====
   useEffect(() => {
     if (!token) return;
     const fetchTasks = async () => {
       try {
-        const data = await apiRequest(`/tasks?date=${date}`, "GET", null, token);
+        const data = await apiRequest(
+          `/tasks?date=${dateStr}`,
+          "GET",
+          null,
+          token,
+        );
         setTasks(data);
       } catch (err) {
         console.error("Fetch tasks failed:", err.message);
       }
     };
     fetchTasks();
-  }, [date, token]);
+  }, [dateStr, token]);
+
+  // ===== Date Navigation Handlers =====
+  const changeDateByAmount = (daysAmount) => {
+    setCurrentDateObj((prev) => {
+      const next = new Date(prev);
+      next.setDate(next.getDate() + daysAmount);
+      return next;
+    });
+  };
 
   // ===== Add new task =====
   const handleAdd = async (title) => {
@@ -43,10 +74,11 @@ const MyDones = () => {
       const newTask = await apiRequest(
         "/tasks",
         "POST",
-        { title, status: "Doing" },
-        token
+        { title, status: "Done" },
+        token,
       );
       setTasks((prev) => [newTask, ...prev]);
+      setShowAddForm(false); // Hide form after adding
     } catch (err) {
       alert("Failed to add task: " + err.message);
     }
@@ -55,9 +87,14 @@ const MyDones = () => {
   // ===== Update task status =====
   const handleStatusChange = async (id, status) => {
     try {
-      const updated = await apiRequest(`/tasks/${id}`, "PUT", { status }, token);
+      const updated = await apiRequest(
+        `/tasks/${id}`,
+        "PUT",
+        { status },
+        token,
+      );
       setTasks((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+        prev.map((t) => (t.id === id ? { ...t, status: updated.status } : t)),
       );
     } catch (err) {
       alert("Failed to update status: " + err.message);
@@ -81,7 +118,7 @@ const MyDones = () => {
     });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `mydones_${date}.json`;
+    link.download = `mydones_${dateStr}.json`;
     link.click();
   };
 
@@ -91,108 +128,181 @@ const MyDones = () => {
       ? tasks
       : tasks.filter((t) => t.status === statusFilter);
 
-  // ======= UI =======
+  // Helper: Get Icon for status dropdown
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "Done":
+        return <ChecklistRtlIcon sx={{ color: "#2e7d32", fontSize: 20 }} />;
+      case "Doing":
+        return <HourglassEmptyIcon sx={{ color: "#ed6c02", fontSize: 20 }} />;
+      case "Blocked":
+        return <HelpOutlineIcon sx={{ color: "#d32f2f", fontSize: 20 }} />;
+      default:
+        return (
+          <FormatListBulletedIcon sx={{ color: "#757575", fontSize: 20 }} />
+        );
+    }
+  };
+
+  // Helper: Select styling override
+  const selectStyle = {
+    ".MuiOutlinedInput-notchedOutline": { borderColor: "#e0e0e0" },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#e0e0e0",
+      borderWidth: 1,
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#bdbdbd" },
+    backgroundColor: "#fff",
+    borderRadius: "6px",
+    fontSize: "14px",
+    height: "36px",
+  };
+
   return (
     <>
-      <NavbarLoggedIn />
-      <div className="p-6 max-w-5xl mx-auto transform translate-y-16">
-        {/* ======= Header + Toolbar ======= */}
-        <div className="flex flex-wrap justify-between items-center bg-white rounded-lg shadow-sm p-4 mb-6">
-          {/* Left: Date Heading */}
-          <div className="flex items-center gap-3">
-            <CalendarDays className="w-5 h-5 text-blue-500" />
-            <div>
-              <h2 className="text-base font-medium text-gray-800">
-                {new Date(date).toLocaleDateString("en-US", {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </h2>
-            </div>
+      <div className="pt-24 p-6 max-w-7xl mx-auto min-h-screen bg-gray-50">
+        {/* ======= Refactored Header + Toolbar (Matching Image_0) ======= */}
+        <div className="flex flex-wrap justify-between items-center py-2 mb-8 gap-4">
+          {/* Left: Date Heading & Nav (Material Date picker isn't easy, so we keep text) */}
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl font-semibold text-gray-900">
+              {currentDateObj.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </h2>
+            <EventIcon className="w-5 h-5 text-gray-400" />
           </div>
 
-          {/* Right: Controls */}
+          {/* Right: Refactored Controls with proper icons and spacing */}
           <div className="flex flex-wrap items-center gap-2">
-            {/* Log Type */}
-            <div className="relative flex items-center border rounded-md px-2 py-1.5 bg-gray-50 text-sm hover:bg-gray-100">
-              {logType === "Personal Log" ? (
-                <User className="w-4 h-4 mr-1 text-gray-600" />
-              ) : (
-                <Users className="w-4 h-4 mr-1 text-gray-600" />
-              )}
-              <select
+            {/* View Icons (Placeholder for the red/black list icons) */}
+            <div className="flex items-center gap-1 border border-gray-100 rounded-md p-0.5 bg-white">
+              <FormatListBulletedIcon sx={{ color: "#757575", fontSize: 22 }} />
+              <ChecklistRtlIcon sx={{ color: "#d32f2f", fontSize: 22 }} />{" "}
+              {/* Red "Active" state */}
+            </div>
+
+            {/* Log Type Selector (Styled Material UI) */}
+            <FormControl size="small" variant="outlined">
+              <Select
                 value={logType}
                 onChange={(e) => setLogType(e.target.value)}
-                className="bg-transparent appearance-none outline-none cursor-pointer"
+                sx={{ ...selectStyle, width: "130px" }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    {logType === "Personal Log" ? (
+                      <PersonOutlineIcon fontSize="small" />
+                    ) : (
+                      <GroupsIcon fontSize="small" />
+                    )}
+                  </InputAdornment>
+                }
               >
-                <option>Personal Log</option>
-                <option>Team Log</option>
-              </select>
-            </div>
+                <MenuItem value="Personal Log">Personal Log</MenuItem>
+                <MenuItem value="Team Log">Team Log</MenuItem>
+              </Select>
+            </FormControl>
 
-            {/* Status Filter */}
-            <div className="relative flex items-center border rounded-md px-2 py-1.5 bg-gray-50 text-sm hover:bg-gray-100">
-              {statusFilter === "Done" ? (
-                <CheckCircle className="w-4 h-4 mr-1 text-green-600" />
-              ) : statusFilter === "Doing" ? (
-                <PauseCircle className="w-4 h-4 mr-1 text-yellow-500" />
-              ) : statusFilter === "Delayed" ? (
-                <XCircle className="w-4 h-4 mr-1 text-red-600" />
-              ) : (
-                <CheckCircle className="w-4 h-4 mr-1 text-gray-400" />
-              )}
-              <select
+            {/* Status Selector (Styled Material UI) */}
+            <FormControl size="small" variant="outlined">
+              <Select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-transparent appearance-none outline-none cursor-pointer"
+                sx={{ ...selectStyle, width: "110px" }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    {getStatusIcon(statusFilter)}
+                  </InputAdornment>
+                }
               >
-                <option value="All">All</option>
-                <option value="Done">Dones</option>
-                <option value="Doing">Doing</option>
-                <option value="Delayed">Delayed</option>
-              </select>
+                <MenuItem value="All">All Items</MenuItem>
+                <MenuItem value="Done">Dones</MenuItem>
+                <MenuItem value="Doing">Doing</MenuItem>
+                <MenuItem value="Blocked">Blocked</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* Date Nav Buttons (Replacing input) */}
+            <div className="flex gap-0.5 border border-gray-100 rounded-md bg-white">
+              <IconButton
+                size="small"
+                onClick={() => changeDateByAmount(-1)}
+                sx={{ color: "#757575", p: "6px" }}
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+              <IconButton
+                size="small"
+                onClick={() => changeDateByAmount(1)}
+                sx={{ color: "#757575", p: "6px" }}
+              >
+                <ChevronRightIcon />
+              </IconButton>
             </div>
 
-            {/* Date Selector */}
-            <div className="flex items-center border rounded-md px-2 py-1.5 bg-gray-50 text-sm hover:bg-gray-100">
-              <CalendarDays className="w-4 h-4 mr-1 text-gray-600" />
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="bg-transparent outline-none cursor-pointer"
-              />
-            </div>
-
-            {/* Export */}
-            <button
+            {/* Export (Text button) */}
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
               onClick={handleExport}
-              className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1.5 rounded-md transition-colors"
+              startIcon={<FileDownloadOutlinedIcon />}
+              sx={{
+                borderRadius: "6px",
+                height: "36px",
+                textTransform: "none",
+                px: 2,
+                borderColor: "#e0e0e0",
+                color: "#757575",
+                "&:hover": {
+                  borderColor: "#bdbdbd",
+                  backgroundColor: "#f5f5f5",
+                },
+              }}
             >
-              <Download className="w-4 h-4" /> Export
-            </button>
+              Export
+            </Button>
 
-            {/* Add Task */}
-            <button
+            {/* Add Task (Solid Red) */}
+            <Button
+              variant="contained"
+              color="error"
+              size="small"
               onClick={() => setShowAddForm((prev) => !prev)}
-              className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1.5 rounded-md shadow-sm transition-colors"
+              startIcon={<AddCircleOutlineIcon />}
+              sx={{
+                borderRadius: "6px",
+                height: "36px",
+                textTransform: "none",
+                px: 2,
+                shadow: "none",
+                "&:hover": { shadow: "none" },
+              }}
             >
-              <PlusCircle className="w-4 h-4" /> Add Task
-            </button>
+              {showAddForm ? "Cancel Add" : "Add New Task"}
+            </Button>
           </div>
         </div>
 
+        {/* ======= Task Entry & List (Functionality is correct) ======= */}
         {/* ======= Add Task ======= */}
-        {showAddForm && <AddTaskForm onAdd={handleAdd} />}
+        {showAddForm && (
+          <AddTaskForm
+            onAdd={handleAdd}
+            onCancel={() => setShowAddForm(false)}
+          />
+        )}
 
-        {/* ======= Task List ======= */}
-        <TaskList
-          tasks={filteredTasks}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
-        />
+        <div className="mt-6">
+          <TaskList
+            tasks={filteredTasks}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+          />
+        </div>
       </div>
     </>
   );

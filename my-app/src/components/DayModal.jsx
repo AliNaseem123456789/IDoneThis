@@ -4,7 +4,9 @@ import { apiRequest } from "../utils/api";
 const DayModal = ({ isOpen, date, onClose }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const dateKey = date ? date.toISOString().split("T")[0] : null;
+  const dateKey = date
+    ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+    : null;
 
   useEffect(() => {
     if (!isOpen || !dateKey) return;
@@ -16,7 +18,7 @@ const DayModal = ({ isOpen, date, onClose }) => {
           `/tasks?date=${dateKey}`,
           "GET",
           null,
-          localStorage.getItem("token")
+          localStorage.getItem("token"),
         );
         setTasks(data || []);
       } catch (err) {
@@ -36,7 +38,7 @@ const DayModal = ({ isOpen, date, onClose }) => {
         `/tasks/${taskId}`,
         "PUT",
         { status: newStatus },
-        localStorage.getItem("token")
+        localStorage.getItem("token"),
       );
       setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
     } catch (err) {
@@ -52,7 +54,7 @@ const DayModal = ({ isOpen, date, onClose }) => {
         `/tasks/${taskId}`,
         "DELETE",
         null,
-        localStorage.getItem("token")
+        localStorage.getItem("token"),
       );
       setTasks((prev) => prev.filter((t) => t.id !== taskId));
     } catch (err) {
@@ -68,10 +70,7 @@ const DayModal = ({ isOpen, date, onClose }) => {
       <div className="relative bg-white max-w-3xl w-full rounded-xl shadow-lg p-6 z-10">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Tasks — {dateKey}</h3>
-          <button
-            className="px-3 py-1 rounded border"
-            onClick={onClose}
-          >
+          <button className="px-3 py-1 rounded border" onClick={onClose}>
             Close
           </button>
         </div>
@@ -90,7 +89,9 @@ const DayModal = ({ isOpen, date, onClose }) => {
                 <div>
                   <div className="font-medium">{t.title}</div>
                   {t.description && (
-                    <div className="text-sm text-gray-600 mt-1">{t.description}</div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      {t.description}
+                    </div>
                   )}
                   <div className="text-xs text-gray-500 mt-1">
                     Created: {new Date(t.created_at).toLocaleString()}

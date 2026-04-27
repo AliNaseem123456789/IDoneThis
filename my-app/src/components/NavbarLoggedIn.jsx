@@ -1,9 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function NavbarLoggedIn() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Helper to highlight the active link
+  const isActive = (path) =>
+    location.pathname === path ? "text-red-600 font-semibold" : "text-gray-600";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -12,43 +17,50 @@ export default function NavbarLoggedIn() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white shadow z-50 flex items-center px-6 py-3">
-      {/* Left side: Logo + main nav */}
-      <div className="flex items-center gap-6 text-gray-900 font-medium">
-        <h1
-          className="font-semibold text-lg cursor-pointer"
-          onClick={() => navigate("/dashboard")}
-        >
-          iDoneThis
-        </h1>
+    <nav className="fixed top-0 left-0 w-full bg-white border-b border-gray-100 shadow-sm z-50">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Left side: Logo + Navigation Links */}
+        <div className="flex items-center gap-8">
+          <h1
+            className="text-xl font-bold text-gray-900 cursor-pointer"
+            onClick={() => navigate("/dashboard")}
+          >
+            iDoneThis
+          </h1>
 
-        <button onClick={() => navigate("/mydones")} className="hover:text-red-500">
-          My Dones
-        </button>
-        <button onClick={() => navigate("/calendar")} className="hover:text-red-500">
-          Calendar
-        </button>
-          <button onClick={() => navigate("/reminders")} className="hover:text-red-500">
-          Reminders
-        </button>
-        <button onClick={() => navigate("/reports")} className="hover:text-red-500">
-          Reports
-        </button>
-      </div>
+          <div className="hidden md:flex items-center gap-6">
+            {["MyDones", "Calendar", "Reminders", "Reports"].map((item) => (
+              <button
+                key={item}
+                onClick={() => navigate(`/${item.toLowerCase()}`)}
+                className={`text-sm font-medium transition-colors hover:text-red-500 ${isActive(`/${item.toLowerCase()}`)}`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      {/* Right side: notifications, profile, logout */}
-      <div className="ml-auto flex items-center gap-6 text-gray-900 font-medium">
-        <NotificationsIcon className="cursor-pointer" />
-        <AccountCircleIcon
-          className="cursor-pointer text-3xl"
-          onClick={() => navigate("/profile")}
-        />
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-        >
-          Logout
-        </button>
+        {/* Right side: Actions */}
+        <div className="flex items-center gap-5">
+          <button className="text-gray-500 hover:text-gray-700 transition-colors">
+            <NotificationsIcon />
+          </button>
+
+          <button
+            onClick={() => navigate("/profile")}
+            className="flex items-center text-gray-700 hover:text-red-600 transition-colors"
+          >
+            <AccountCircleIcon className="text-3xl" />
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="ml-2 bg-gray-900 text-white text-sm px-4 py-2 rounded-lg hover:bg-black transition-all shadow-sm"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   );

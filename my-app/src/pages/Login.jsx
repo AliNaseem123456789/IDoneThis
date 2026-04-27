@@ -1,29 +1,27 @@
 import { useState } from "react";
-import axios from "axios";
 import GoogleIcon from "@mui/icons-material/Google";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import api from "../api/api";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
-  try {
-    const res = await axios.post("http://localhost:5000/auth/login", { email, password });
-
-    // ✅ Save login data
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-
-    // ✅ Redirect to dashboard
-    window.location.href = "/dashboard";
-  } catch (err) {
-    console.error(err.response?.data?.error || err.message);
-    alert(err.response?.data?.error || err.message);
-  }
-};
+    try {
+      const res = await api.post("/auth/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      window.location.href = "/dashboard";
+    } catch (err) {
+      console.error(err.response?.data?.error || err.message);
+      alert(err.response?.data?.error || err.message);
+    }
+  };
 
   const handleGoogleLogin = () => {
     alert("Google login can be implemented here");
@@ -32,12 +30,12 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden">
-        
         {/* Left side content */}
         <div className="md:w-1/2 bg-blue-900 text-white p-10 flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl font-bold mb-6">Welcome Back!</h1>
           <p className="mb-6">
-            Track your tasks, measure your progress, and get more done every day!
+            Track your tasks, measure your progress, and get more done every
+            day!
           </p>
           <img
             src="https://source.unsplash.com/300x200/?productivity"
@@ -45,12 +43,8 @@ export default function Login() {
             className="rounded-lg shadow-lg"
           />
         </div>
-
-        {/* Right side form */}
         <div className="md:w-1/2 p-10 flex flex-col justify-center">
           <h2 className="text-3xl font-semibold mb-6">Sign In</h2>
-
-          {/* Email input */}
           <input
             type="email"
             placeholder="Email"
