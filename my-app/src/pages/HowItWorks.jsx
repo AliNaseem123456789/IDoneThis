@@ -6,7 +6,6 @@ import Video1 from "../assets/video.mp4";
 export default function HowItWorks() {
   return (
     <>
-      {/* Hero Section */}
       <section className="bg-white text-black py-20">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">How it Works</h1>
@@ -15,8 +14,6 @@ export default function HowItWorks() {
           </p>
         </div>
       </section>
-
-      {/* Video Section */}
       <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-6 text-center">
           <video
@@ -28,19 +25,14 @@ export default function HowItWorks() {
           </video>
         </div>
       </section>
-      {/* Benefits Section - Alternating Layout */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6 space-y-24">
-          {/* Benefit #1 */}
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Image Left */}
             <img
               src={benefit1}
               alt="Increase Productivity"
               className="w-full rounded-xl shadow-lg object-cover"
             />
-
-            {/* Text */}
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Increase Productivity
@@ -53,10 +45,7 @@ export default function HowItWorks() {
               </p>
             </div>
           </div>
-
-          {/* Benefit #2 */}
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Text Left */}
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Improve Engagement
@@ -67,25 +56,18 @@ export default function HowItWorks() {
                 managers with valuable insights to gauge team sentiment.
               </p>
             </div>
-
-            {/* Image Right */}
             <img
               src={benefit2}
               alt="Improve Engagement"
               className="w-full rounded-xl shadow-lg object-cover"
             />
           </div>
-
-          {/* Benefit #3 */}
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            {/* Image Left */}
             <img
               src={benefit3}
               alt="Decrease Meetings"
               className="w-full rounded-xl shadow-lg object-cover"
             />
-
-            {/* Text */}
             <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Reduce Meetings
@@ -99,12 +81,9 @@ export default function HowItWorks() {
           </div>
         </div>
       </section>
-
-      {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Feature 1 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-book text-purple-600 text-xl"></i>
@@ -115,8 +94,6 @@ export default function HowItWorks() {
                 goals
               </p>
             </div>
-
-            {/* Feature 2 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-bell text-yellow-600 text-xl"></i>
@@ -127,8 +104,6 @@ export default function HowItWorks() {
                 prompts
               </p>
             </div>
-
-            {/* Feature 3 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-chart-bar text-green-600 text-xl"></i>
@@ -138,8 +113,6 @@ export default function HowItWorks() {
                 Look back on your achievements and see how far you've come
               </p>
             </div>
-
-            {/* Feature 4 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-search text-blue-600 text-xl"></i>
@@ -150,8 +123,6 @@ export default function HowItWorks() {
                 questions to better understand your productivity
               </p>
             </div>
-
-            {/* Feature 5 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-calendar-alt text-indigo-600 text-xl"></i>
@@ -162,8 +133,6 @@ export default function HowItWorks() {
                 done
               </p>
             </div>
-
-            {/* Feature 6 */}
             <div className="bg-white p-8 rounded-lg shadow-sm feature-card">
               <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
                 <i className="fas fa-robot text-pink-600 text-xl"></i>
@@ -176,8 +145,6 @@ export default function HowItWorks() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="py-16 bg-purple-700 text-white">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">
@@ -194,12 +161,9 @@ export default function HowItWorks() {
           </a>
         </div>
       </section>
-
-      {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
-            {/* Product */}
             <div>
               <h3 className="font-bold text-lg mb-4">Product</h3>
               <ul className="space-y-2">
@@ -233,8 +197,6 @@ export default function HowItWorks() {
                 </li>
               </ul>
             </div>
-
-            {/* Resources */}
             <div>
               <h3 className="font-bold text-lg mb-4">Resources</h3>
               <ul className="space-y-2">
@@ -260,8 +222,6 @@ export default function HowItWorks() {
                 </li>
               </ul>
             </div>
-
-            {/* Company */}
             <div>
               <h3 className="font-bold text-lg mb-4">Company</h3>
               <ul className="space-y-2">
@@ -290,8 +250,6 @@ export default function HowItWorks() {
                 </li>
               </ul>
             </div>
-
-            {/* Newsletter */}
             <div>
               <h3 className="font-bold text-lg mb-4">
                 Receive The Latest Productivity Tips

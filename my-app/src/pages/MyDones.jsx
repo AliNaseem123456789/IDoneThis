@@ -161,9 +161,7 @@ const MyDones = () => {
   return (
     <>
       <div className="pt-24 p-6 max-w-7xl mx-auto min-h-screen bg-gray-50">
-        {/* ======= Refactored Header + Toolbar (Matching Image_0) ======= */}
         <div className="flex flex-wrap justify-between items-center py-2 mb-8 gap-4">
-          {/* Left: Date Heading & Nav (Material Date picker isn't easy, so we keep text) */}
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-semibold text-gray-900">
               {currentDateObj.toLocaleDateString("en-US", {
@@ -175,17 +173,11 @@ const MyDones = () => {
             </h2>
             <EventIcon className="w-5 h-5 text-gray-400" />
           </div>
-
-          {/* Right: Refactored Controls with proper icons and spacing */}
           <div className="flex flex-wrap items-center gap-2">
-            {/* View Icons (Placeholder for the red/black list icons) */}
             <div className="flex items-center gap-1 border border-gray-100 rounded-md p-0.5 bg-white">
               <FormatListBulletedIcon sx={{ color: "#757575", fontSize: 22 }} />
               <ChecklistRtlIcon sx={{ color: "#d32f2f", fontSize: 22 }} />{" "}
-              {/* Red "Active" state */}
             </div>
-
-            {/* Log Type Selector (Styled Material UI) */}
             <FormControl size="small" variant="outlined">
               <Select
                 value={logType}
@@ -205,8 +197,6 @@ const MyDones = () => {
                 <MenuItem value="Team Log">Team Log</MenuItem>
               </Select>
             </FormControl>
-
-            {/* Status Selector (Styled Material UI) */}
             <FormControl size="small" variant="outlined">
               <Select
                 value={statusFilter}
@@ -224,8 +214,6 @@ const MyDones = () => {
                 <MenuItem value="Blocked">Blocked</MenuItem>
               </Select>
             </FormControl>
-
-            {/* Date Nav Buttons (Replacing input) */}
             <div className="flex gap-0.5 border border-gray-100 rounded-md bg-white">
               <IconButton
                 size="small"
@@ -242,8 +230,6 @@ const MyDones = () => {
                 <ChevronRightIcon />
               </IconButton>
             </div>
-
-            {/* Export (Text button) */}
             <Button
               variant="outlined"
               color="error"
@@ -265,8 +251,6 @@ const MyDones = () => {
             >
               Export
             </Button>
-
-            {/* Add Task (Solid Red) */}
             <Button
               variant="contained"
               color="error"
@@ -286,9 +270,6 @@ const MyDones = () => {
             </Button>
           </div>
         </div>
-
-        {/* ======= Task Entry & List (Functionality is correct) ======= */}
-        {/* ======= Add Task ======= */}
         {showAddForm && (
           <AddTaskForm
             onAdd={handleAdd}

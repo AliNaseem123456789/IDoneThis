@@ -10,8 +10,6 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
-
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -56,15 +54,12 @@ export default function Chatbot() {
 
   return (
     <div className="fixed bottom-6 right-6 w-80 bg-white shadow-2xl rounded-xl overflow-hidden border z-50 flex flex-col font-sans">
-      {/* Header */}
       <div className="bg-indigo-600 text-white px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
           <span className="font-bold text-sm tracking-wide">AI Assistant</span>
         </div>
       </div>
-
-      {/* Chat Window */}
       <div
         ref={scrollRef}
         className="p-4 h-64 overflow-y-auto flex flex-col gap-3 bg-gray-50"
@@ -87,8 +82,6 @@ export default function Chatbot() {
           </div>
         )}
       </div>
-
-      {/* Input Area */}
       <div className="flex border-t bg-white p-2">
         <input
           type="text"

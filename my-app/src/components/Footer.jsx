@@ -4,7 +4,6 @@ const Footer = () => {
   return (
     <footer className="bg-white py-12 px-6 border-t border-gray-100">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Product Column */}
         <div>
           <h3 className="font-bold text-gray-900 mb-4 border-b-2 border-black inline-block pb-1">
             Product
@@ -41,8 +40,6 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
-        {/* Resources Column */}
         <div>
           <h3 className="font-bold text-gray-900 mb-4 border-b-2 border-black inline-block pb-1">
             Resources
@@ -70,8 +67,6 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
-        {/* Company Column */}
         <div>
           <h3 className="font-bold text-gray-900 mb-4 border-b-2 border-black inline-block pb-1">
             Company
@@ -99,8 +94,6 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
-        {/* Newsletter Column */}
         <div>
           <h3 className="font-bold text-gray-900 mb-4 text-sm">
             Receive The Latest Productivity Tips

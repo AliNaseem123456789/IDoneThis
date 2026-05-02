@@ -75,7 +75,6 @@ const CalendarDashboard = () => {
       <NavbarLoggedIn />
       <div className="pt-24 p-6 max-w-7xl mx-auto min-h-screen bg-gray-50">
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Calendar Section */}
           <Paper
             elevation={0}
             className="flex-1 p-6 border border-gray-200 rounded-xl shadow-sm"
@@ -128,8 +127,6 @@ const CalendarDashboard = () => {
               }
             />
           </Paper>
-
-          {/* Stats Section */}
           <div className="lg:w-80 flex flex-col gap-6">
             <Paper
               elevation={0}
@@ -173,8 +170,6 @@ const CalendarDashboard = () => {
     </>
   );
 };
-
-// Helper component for clean list rows
 const StatRow = ({ label, value }) => (
   <div className="flex justify-between">
     <span className="text-gray-500">{label}</span>

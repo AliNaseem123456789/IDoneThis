@@ -24,8 +24,8 @@ const TermsOfService = () => {
                 accept buttons relating to these{" "}
                 <a href="#" className="text-orange-600 underline">
                   Terms and Conditions of Service
-                </a>{" "}
-                and{" "}
+                </a>
+                and
                 <a href="/privacy" className="text-orange-600 underline">
                   Privacy Policy
                 </a>

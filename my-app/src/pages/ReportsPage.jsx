@@ -12,7 +12,6 @@ import { Paper, Button, Alert, CircularProgress } from "@mui/material";
 import { apiRequest } from "../utils/api";
 
 const ReportsPage = ({ userId }) => {
-  // Make sure userId is passed from auth context
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("Reflections");
@@ -23,28 +22,18 @@ const ReportsPage = ({ userId }) => {
     startDate: null,
     endDate: null,
   });
-
-  // Get user ID from localStorage if not passed as prop
   const getUserId = useCallback(() => {
-    // Try to get from props first
     if (userId) return userId;
-
-    // Try to get from localStorage
     try {
       const user = localStorage.getItem("user");
       if (user) {
         const userData = JSON.parse(user);
         return userData.id || userData.user_id;
       }
-
-      // Try direct access
       const storedUserId = localStorage.getItem("user_id");
       if (storedUserId) return storedUserId;
-
-      // Try to get from token
       const token = localStorage.getItem("token");
       if (token) {
-        // Decode JWT token to get user ID (if it's a JWT)
         try {
           const payload = JSON.parse(atob(token.split(".")[1]));
           return payload.sub || payload.user_id || payload.id;
@@ -58,8 +47,6 @@ const ReportsPage = ({ userId }) => {
 
     return null;
   }, [userId]);
-
-  // Direct API call to port 8000 for AI summary
   const callAISummaryDirectly = async (userId, startDate, endDate) => {
     if (!userId) {
       throw new Error("User ID is required. Please log in again.");
@@ -181,7 +168,7 @@ const ReportsPage = ({ userId }) => {
       const delayed = tasks.filter((t) => t.status === "Delayed");
 
       setAiSummary({
-        summary: `📊 Task Summary: You have completed ${dones.length} tasks, with ${doing.length} in progress and ${delayed.length} delayed. ${
+        summary: `Task Summary: You have completed ${dones.length} tasks, with ${doing.length} in progress and ${delayed.length} delayed. ${
           delayed.length > 0
             ? "Consider prioritizing your delayed tasks."
             : "Great job staying on top of your tasks!"
@@ -193,11 +180,11 @@ const ReportsPage = ({ userId }) => {
         },
         recommendations: [
           {
-            title: "🔧 Backend Connection Issue",
+            title: "Backend Connection Issue",
             text: `Unable to connect to AI service on port 8000. Please ensure the backend server is running with: python main.py`,
           },
           {
-            title: "💡 Quick Tip",
+            title: "Quick Tip",
             text:
               delayed.length > 0
                 ? `Focus on completing your ${delayed.length} delayed task(s) first.`
@@ -334,8 +321,6 @@ const ReportsPage = ({ userId }) => {
           </Button>
         </div>
       </div>
-
-      {/* Tabs */}
       <div className="mb-8 border-b border-gray-200">
         <div className="flex gap-8">
           {["Accomplishments", "Reflections", "Trends"].map((tab) => (
