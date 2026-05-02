@@ -7,7 +7,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 
-##  Overview
+## Overview
 
 **TaskFlow** is a full-stack "I Done This" style productivity platform that helps individuals and teams track daily accomplishments, visualize progress, and leverage AI-powered insights for continuous improvement.
 
@@ -103,7 +103,7 @@ Unlike traditional todo apps, TaskFlow focuses on **what you've already accompli
 
 ```bash
 # Clone repository
-git clone https://github.com/AliNaseem123456789/productivity-website.git
+git clone https://github.com/AliNaseem123456789/IDoneThis
 cd productivity-website/backend
 
 # Create virtual environment
