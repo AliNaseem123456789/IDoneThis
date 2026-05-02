@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-
-import { successStories } from "./case-studies";
+import { successStories } from "../data/case-studies";
 const SuccessStories = () => {
   const [selectedStory, setSelectedStory] = useState(null);
-
-  // If a story is selected, show the Detailed View
   if (selectedStory) {
     return (
       <div className="bg-white min-h-screen pb-20">
-        {/* Navigation / Back Button */}
         <div className="max-w-4xl mx-auto px-6 pt-12">
           <button
             onClick={() => setSelectedStory(null)}
@@ -22,8 +18,8 @@ const SuccessStories = () => {
           </h1>
 
           <div className="flex gap-6 text-gray-500 font-medium mb-12 pb-8 border-b border-gray-100">
-            <span>👥 Team: {selectedStory.team}</span>
-            <span>✅ Dones: {selectedStory.dones}</span>
+            <span>Team: {selectedStory.team}</span>
+            <span>Dones: {selectedStory.dones}</span>
           </div>
 
           <div className="space-y-12 text-lg text-gray-700 leading-relaxed">
@@ -59,7 +55,6 @@ const SuccessStories = () => {
     );
   }
 
-  // Grid View
   return (
     <div className="bg-white min-h-screen py-20 px-6">
       <div className="max-w-6xl mx-auto text-center mb-16">

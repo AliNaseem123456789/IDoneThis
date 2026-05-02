@@ -52,7 +52,7 @@ const ReportsPage = ({ userId }) => {
       throw new Error("User ID is required. Please log in again.");
     }
 
-    const API_BASE_URL = "http://localhost:8000";
+    const API_BASE_URL = "https://idonethis-1.onrender.com";
     const url = `${API_BASE_URL}/api/ai-summary`;
 
     const body = {
