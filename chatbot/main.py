@@ -7,38 +7,29 @@ from dotenv import load_dotenv
 from typing import Optional, List
 from datetime import datetime, date
 from supabase import create_client, Client
-
-# --- LOAD CONFIG ---
 load_dotenv()
-
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 SUPABASE_URL = os.getenv("VITE_SUPABASE_URL")
 SUPABASE_API_KEY = os.getenv("VITE_SUPABASE_API")
-
-# Validate required keys
 if not GROQ_API_KEY:
-    print("⚠️ Warning: GROQ_API_KEY not found in .env file")
+    print(" Warning: GROQ_API_KEY not found in .env file")
 if not SUPABASE_URL or not SUPABASE_API_KEY:
-    print("⚠️ Warning: Supabase credentials not found in .env file")
-
-# --- INITIALIZE CLIENTS ---
+    print(" Warning: Supabase credentials not found in .env file")
 try:
     groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
-    print("✅ Groq client initialized")
+    print(" Groq client initialized")
 except Exception as e:
-    print(f"❌ Groq initialization failed: {e}")
+    print(f"Groq initialization failed: {e}")
     groq_client = None
 
 try:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_API_KEY) if SUPABASE_URL and SUPABASE_API_KEY else None
-    print("✅ Supabase client initialized")
+    print(" Supabase client initialized")
 except Exception as e:
-    print(f"❌ Supabase initialization failed: {e}")
+    print(f" Supabase initialization failed: {e}")
     supabase = None
 
 app = FastAPI()
-
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:8000"],
@@ -46,8 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# --- PYDANTIC MODELS ---
 class ChatRequest(BaseModel):
     message: str
     user_id: Optional[str] = None
@@ -67,8 +56,6 @@ class SummaryRequest(BaseModel):
     user_id: str
     start_date: Optional[date] = None
     end_date: Optional[date] = None
-
-# --- HELPER FUNCTIONS ---
 def get_user_tasks_supabase(user_id: str, start_date: date = None, end_date: date = None):
     """Fetch tasks from Supabase"""
     try:
@@ -84,8 +71,6 @@ def get_user_tasks_supabase(user_id: str, start_date: date = None, end_date: dat
     except Exception as e:
         print(f"Supabase query error: {e}")
         return []
-
-# --- API ENDPOINTS ---
 @app.get("/")
 async def root():
     return {
@@ -186,46 +171,36 @@ async def get_ai_summary(request: SummaryRequest):
             "insights": {"dones": [], "doing": [], "delayed": []},
             "recommendations": [{"title": "Database Error", "text": "Check Supabase URL and API key"}],
             "stats": {"total_tasks": 0, "completion_rate": 0, "delayed_count": 0}
-        }
-    
+        }    
     try:
-        # Fetch tasks from Supabase
-        tasks = get_user_tasks_supabase(request.user_id, request.start_date, request.end_date)
-        
+        tasks = get_user_tasks_supabase(request.user_id, request.start_date, request.end_date)        
         if not tasks:
             return {
-                "summary": "📝 No tasks found for the selected period. Start by creating your first task to get AI-powered insights!",
+                "summary": "No tasks found for the selected period. Start by creating your first task to get AI-powered insights!",
                 "insights": {"dones": [], "doing": [], "delayed": []},
                 "recommendations": [
-                    {"title": "🚀 Get Started", "text": "Create your first task to begin tracking progress"},
-                    {"title": "💡 Pro Tip", "text": "Add detailed descriptions to get better AI insights"}
+                    {"title": "Get Started", "text": "Create your first task to begin tracking progress"},
+                    {"title": "Pro Tip", "text": "Add detailed descriptions to get better AI insights"}
                 ],
                 "stats": {"total_tasks": 0, "completion_rate": 0, "delayed_count": 0}
-            }
-        
-        # Organize tasks by status
+            }        
         dones = [t for t in tasks if t.get('status') == 'Done']
         doing = [t for t in tasks if t.get('status') == 'Doing']
-        delayed = [t for t in tasks if t.get('status') == 'Delayed']
-        
-        # Prepare context for AI
+        delayed = [t for t in tasks if t.get('status') == 'Delayed']        
         task_context = f"""
         Task Analytics:
-        ✅ Completed: {len(dones)} tasks
-        🔄 In Progress: {len(doing)} tasks
-        ⏰ Delayed: {len(delayed)} tasks
-        📊 Total Tasks: {len(tasks)}
-        
+        Completed: {len(dones)} tasks
+        In Progress: {len(doing)} tasks
+        Delayed: {len(delayed)} tasks
+        Total Tasks: {len(tasks)}
         Recent Accomplishments:
         {chr(10).join([f'  • {t["title"]}' for t in dones[:5]]) if dones else '  • No completed tasks yet'}
         
         Current Focus:
         {chr(10).join([f'  • {t["title"]}' for t in doing[:5]]) if doing else '  • No active tasks'}
         
-        {'⚠️ Delayed Items:' + chr(10).join([f'  • {t["title"]}' for t in delayed[:5]]) if delayed else ''}
-        """
-        
-        # Generate AI summary
+        {' Delayed Items:' + chr(10).join([f'  • {t["title"]}' for t in delayed[:5]]) if delayed else ''}
+        """        
         completion = groq_client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[
@@ -241,39 +216,35 @@ async def get_ai_summary(request: SummaryRequest):
             temperature=0.7,
             max_tokens=600
         )
-        
-        ai_summary = completion.choices[0].message.content
-        
-        # Generate smart recommendations
+        ai_summary = completion.choices[0].message.content        
         recommendations = []
-        
         if len(delayed) > 2:
             recommendations.append({
-                "title": "🎯 Priority Action",
+                "title": "Priority Action",
                 "text": f"Address {len(delayed)} delayed tasks. Break them into smaller, 15-minute micro-tasks."
             })
         
         if len(dones) == 0 and len(tasks) > 0:
             recommendations.append({
-                "title": "💪 Build Momentum",
+                "title": "Build Momentum",
                 "text": "Complete your easiest task first to build confidence and momentum."
             })
         
         if len(doing) > 5:
             recommendations.append({
-                "title": "📊 Limit WIP",
+                "title": "Limit WIP",
                 "text": f"Too many active tasks ({len(doing)}). Focus on completing 2-3 before starting new ones."
             })
         
         if len(dones) > 5:
             recommendations.append({
-                "title": "🏆 Great Progress!",
+                "title": "Great Progress!",
                 "text": f"Completed {len(dones)} tasks! Celebrate wins and maintain this momentum."
             })
         
         if len(recommendations) == 0:
             recommendations.append({
-                "title": "✅ On Track",
+                "title": "On Track",
                 "text": "You're making steady progress. Keep up the good work!"
             })
         
@@ -304,10 +275,9 @@ async def get_ai_summary(request: SummaryRequest):
 async def chat(request: ChatRequest):
     """General chat with AI assistant"""
     if not groq_client:
-        return {"response": "⚠️ AI service unavailable. Please check GROQ_API_KEY configuration."}
+        return {"response": "AI service unavailable. Please check GROQ_API_KEY configuration."}
     
     try:
-        # If user has tasks, fetch them for context
         context = ""
         if supabase and request.user_id:
             tasks = get_user_tasks_supabase(request.user_id)
@@ -323,8 +293,7 @@ async def chat(request: ChatRequest):
             ],
             temperature=0.7,
             max_tokens=1024
-        )
-        
+        )        
         return {
             "response": completion.choices[0].message.content,
             "status": "success"
@@ -332,18 +301,17 @@ async def chat(request: ChatRequest):
         
     except Exception as e:
         return {
-            "response": f"❌ Error: {str(e)}",
+            "response": f"Error: {str(e)}",
             "status": "error"
         }
 
 if __name__ == "__main__":
     import uvicorn
-    print("\n" + "="*50)
-    print("🚀 AI Task Management API")
+    print("AI Task Management API")
     print("="*50)
-    print(f"📍 Server: http://0.0.0.0:8000")
-    print(f"📖 API Docs: http://localhost:8000/docs")
-    print(f"🔌 Groq: {'✅ Connected' if groq_client else '❌ Not configured'}")
-    print(f"💾 Supabase: {'✅ Connected' if supabase else '❌ Not configured'}")
+    print(f"Server: http://0.0.0.0:8000")
+    print(f"API Docs: http://localhost:8000/docs")
+    print(f" Groq: {' Connected' if groq_client else ' Not configured'}")
+    print(f" Supabase: {'Connected' if supabase else ' Not configured'}")
     print("="*50 + "\n")
     uvicorn.run(app, host="0.0.0.0", port=8000)

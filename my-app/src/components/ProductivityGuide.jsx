@@ -50,7 +50,6 @@ const ProductivityGuides = () => {
 
   return (
     <div className="bg-white min-h-screen font-sans">
-      {/* Header */}
       <section className="py-20 px-6 text-center">
         <h1 className="text-5xl font-extrabold text-black mb-4">
           Productivity Guides
@@ -60,8 +59,6 @@ const ProductivityGuides = () => {
           achieve their goals.
         </p>
       </section>
-
-      {/* Grid */}
       <section className="max-w-7xl mx-auto pb-20 px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {guidesData.map((guide, index) => (
@@ -84,8 +81,6 @@ const ProductivityGuides = () => {
           ))}
         </div>
       </section>
-
-      {/* Modal / Reading Overlay */}
       {activeGuide && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-8 md:p-12 shadow-2xl relative animate-in fade-in zoom-in duration-200">

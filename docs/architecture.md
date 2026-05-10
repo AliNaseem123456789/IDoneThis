@@ -3,29 +3,29 @@ cat > docs/architecture-diagrams.md << 'EOF'
 
 # TaskFlow System Architecture Diagrams
 
-## 🏗️ System Architecture
+## System Architecture
 
 [Insert first flowchart here]
 
-## 📊 API Flow
+## API Flow
 
-![API flow](./deepseek_mermaid_20260502_c8ecff.png)
+![API flow](./api.png)
 
-## 🧠 AI Pipeline
+## AI Pipeline
 
-![System Architecture](./deepseek_mermaid_20260502_1c1e8e.png)
+![System Architecture](./system.png)
 
-## 📋 Database Schema
+## Database Schema
 
-![Database Schema](./deepseek_mermaid_20260502_f66e0f.png)
+![Database Schema](./database.png)
 
-## 🔄 Error Handling
+##  Error Handling
 
-![Error flow here](./deepseek_mermaid_20260502_74c73f.png)
+![Error flow here](./error.png)
 
-## 🚀 Deployment
+##  Deployment
 
-![Deployment architecture here](./deepseek_mermaid_20260502_02c033.png)
+![Deployment architecture here](./deployment.png)
 
 EOF
 

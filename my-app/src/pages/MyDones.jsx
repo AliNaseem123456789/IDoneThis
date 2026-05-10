@@ -36,11 +36,7 @@ const MyDones = () => {
   const [logType, setLogType] = useState("Personal Log");
   const [statusFilter, setStatusFilter] = useState("All");
   const [showAddForm, setShowAddForm] = useState(false);
-
-  // Derive date string for API and UI
   const dateStr = currentDateObj.toISOString().split("T")[0];
-
-  // ===== Fetch tasks =====
   useEffect(() => {
     if (!token) return;
     const fetchTasks = async () => {
@@ -58,8 +54,6 @@ const MyDones = () => {
     };
     fetchTasks();
   }, [dateStr, token]);
-
-  // ===== Date Navigation Handlers =====
   const changeDateByAmount = (daysAmount) => {
     setCurrentDateObj((prev) => {
       const next = new Date(prev);
@@ -67,8 +61,6 @@ const MyDones = () => {
       return next;
     });
   };
-
-  // ===== Add new task =====
   const handleAdd = async (title) => {
     try {
       const newTask = await apiRequest(
@@ -83,8 +75,6 @@ const MyDones = () => {
       alert("Failed to add task: " + err.message);
     }
   };
-
-  // ===== Update task status =====
   const handleStatusChange = async (id, status) => {
     try {
       const updated = await apiRequest(
@@ -100,8 +90,6 @@ const MyDones = () => {
       alert("Failed to update status: " + err.message);
     }
   };
-
-  // ===== Delete task =====
   const handleDelete = async (id) => {
     try {
       await apiRequest(`/tasks/${id}`, "DELETE", null, token);
@@ -110,8 +98,6 @@ const MyDones = () => {
       alert("Failed to delete task: " + err.message);
     }
   };
-
-  // ===== Export tasks as JSON =====
   const handleExport = () => {
     const blob = new Blob([JSON.stringify(tasks, null, 2)], {
       type: "application/json",
@@ -121,14 +107,10 @@ const MyDones = () => {
     link.download = `mydones_${dateStr}.json`;
     link.click();
   };
-
-  // ===== Apply filters =====
   const filteredTasks =
     statusFilter === "All"
       ? tasks
       : tasks.filter((t) => t.status === statusFilter);
-
-  // Helper: Get Icon for status dropdown
   const getStatusIcon = (status) => {
     switch (status) {
       case "Done":
@@ -143,8 +125,6 @@ const MyDones = () => {
         );
     }
   };
-
-  // Helper: Select styling override
   const selectStyle = {
     ".MuiOutlinedInput-notchedOutline": { borderColor: "#e0e0e0" },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {

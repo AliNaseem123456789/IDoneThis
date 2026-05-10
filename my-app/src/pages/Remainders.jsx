@@ -1,57 +1,3 @@
-// import React, { useState } from "react";
-
-// const Reminders = () => {
-//   const [status, setStatus] = useState("");
-
-//   const token = localStorage.getItem("token");
-
-//   const handleSendReminder = async () => {
-//     setStatus("Sending...");
-//     try {
-//       const res = await fetch("http://localhost:5000/email/send-reminder", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({
-//           subject: "Test Reminder",
-//           message: "This is a test email that should arrive soon!",
-//         }),
-//       });
-
-//       const data = await res.json();
-//       if (res.ok) {
-//         setStatus("✅ Reminder triggered successfully!");
-//       } else {
-//         setStatus("❌ Failed: " + (data.error || "Unknown error"));
-//       }
-//     } catch (err) {
-//       setStatus("❌ Error: " + err.message);
-//     }
-//   };
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-//       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
-//         <h2 className="text-2xl font-semibold mb-4">Test Reminder</h2>
-//         <button
-//           onClick={handleSendReminder}
-//           className="bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition mb-4"
-//         >
-//           Send Reminder Now
-//         </button>
-//         {status && <p className="text-gray-700">{status}</p>}
-//         <p className="text-sm text-gray-500 mt-2">
-//           A test reminder will also be sent automatically at 3:20 PM.
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Reminders;
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -82,10 +28,7 @@ export default function Remainders() {
   const [notifyLowActivity, setNotifyLowActivity] = useState(true);
   const [notifyTaskAssigned, setNotifyTaskAssigned] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const API_URL = "http://localhost:5000/email"; // adjust to your deployment
-
-  // Load user reminders on mount
+  const API_URL = "https://idonethis.onrender.com/email";
   useEffect(() => {
     const fetchReminders = async () => {
       try {
@@ -175,10 +118,10 @@ export default function Remainders() {
         });
       }
 
-      alert("✅ Reminder and Digest settings saved successfully!");
+      alert("Reminder and Digest settings saved successfully!");
     } catch (err) {
       console.error("Failed to save reminders:", err);
-      alert("❌ Failed to save settings. Please try again.");
+      alert(" Failed to save settings. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -188,14 +131,12 @@ export default function Remainders() {
     <>
       <div className="pt-16 min-h-screen bg-gray-50 flex flex-col items-center p-6">
         <div className="w-full max-w-5xl bg-white rounded-xl shadow-sm border border-gray-200">
-          {/* Header */}
           <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h1 className="text-lg font-semibold text-gray-800">Reminders</h1>
             <div className="text-sm text-gray-500">Personal Log ▾</div>
           </div>
 
           <div className="flex flex-col md:flex-row px-8 py-8 gap-8">
-            {/* Left */}
             <div className="md:w-1/3">
               <p className="text-gray-600 text-sm leading-relaxed">
                 You can customize when and how you receive reminders or digests.
@@ -203,8 +144,6 @@ export default function Remainders() {
                 Slack).
               </p>
             </div>
-
-            {/* Right */}
             <div className="md:w-2/3 space-y-6">
               <div className="space-y-2">
                 <FormControlLabel
@@ -228,8 +167,6 @@ export default function Remainders() {
                   label="Notify me when a new task is assigned to me."
                 />
               </div>
-
-              {/* Reminder Section */}
               <div className="space-y-3">
                 <label className="font-medium text-gray-700 text-sm">
                   Send me reminders on
@@ -316,8 +253,6 @@ export default function Remainders() {
                   </div>
                 </div>
               </div>
-
-              {/* Digest Section */}
               <div className="space-y-3">
                 <label className="font-medium text-gray-700 text-sm">
                   Send me digests on
@@ -382,7 +317,6 @@ export default function Remainders() {
                     ))}
                   </div>
                 </div>
-
                 <div>
                   <label className="font-medium text-gray-700 text-sm block mb-2">
                     Send digests to my
@@ -404,8 +338,6 @@ export default function Remainders() {
                   </div>
                 </div>
               </div>
-
-              {/* Save Button */}
               <div className="pt-4">
                 <Button
                   variant="contained"

@@ -104,7 +104,6 @@ const Reviews = () => {
   return (
     <div className="bg-[#fff9f9] py-20 px-6">
       <div className="max-w-6xl mx-auto">
-        {/* Optional Title Section */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Loved by teams everywhere
@@ -113,8 +112,6 @@ const Reviews = () => {
             Join thousands of productive professionals.
           </p>
         </div>
-
-        {/* Masonry-style Grid */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
           {reviews.map((review, index) => (
             <div key={index} className="break-inside-avoid">

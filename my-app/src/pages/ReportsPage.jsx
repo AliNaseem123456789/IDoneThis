@@ -86,8 +86,6 @@ const ReportsPage = ({ userId }) => {
       throw error;
     }
   };
-
-  // Fetch tasks from backend (using your existing apiRequest)
   const fetchTasks = useCallback(async () => {
     const currentUserId = getUserId();
     if (!currentUserId) {
@@ -99,8 +97,6 @@ const ReportsPage = ({ userId }) => {
     try {
       setLoading(true);
       setError(null);
-
-      // Build query params
       let url = `/tasks?user_id=${currentUserId}`;
       if (dateRange.startDate) {
         url += `&start_date=${dateRange.startDate}`;
@@ -108,7 +104,6 @@ const ReportsPage = ({ userId }) => {
       if (dateRange.endDate) {
         url += `&end_date=${dateRange.endDate}`;
       }
-
       const data = await apiRequest(
         url,
         "GET",
@@ -146,8 +141,6 @@ const ReportsPage = ({ userId }) => {
       setError(null);
       console.log("Fetching AI summary for user:", currentUserId);
       console.log("Date range:", dateRange);
-
-      // Direct call to port 8000
       const response = await callAISummaryDirectly(
         currentUserId,
         dateRange.startDate,
@@ -350,7 +343,6 @@ const ReportsPage = ({ userId }) => {
       )}
 
       <Paper elevation={0} className="p-8 border border-gray-200 rounded-xl">
-        {/* AI Summary Section */}
         <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl mb-8 border border-purple-100">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold flex items-center gap-2">
@@ -370,8 +362,6 @@ const ReportsPage = ({ userId }) => {
                   {aiSummary.summary}
                 </p>
               </div>
-
-              {/* Stats Cards */}
               <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-purple-200">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">

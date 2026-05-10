@@ -30,7 +30,6 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl flex flex-col md:flex-row overflow-hidden">
-        {/* Left side content */}
         <div className="md:w-1/2 bg-blue-900 text-white p-10 flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl font-bold mb-6">Welcome Back!</h1>
           <p className="mb-6">
@@ -52,8 +51,6 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             className="mb-4 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-
-          {/* Password input with visibility toggle */}
           <div className="relative mb-2 w-full">
             <input
               type={showPassword ? "text" : "password"}
@@ -69,38 +66,28 @@ export default function Login() {
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </span>
           </div>
-
-          {/* Forgot password */}
           <div className="text-right mb-4">
             <a href="#" className="text-blue-600 hover:underline text-sm">
               Forgot password?
             </a>
           </div>
-
-          {/* Sign In button */}
           <button
             onClick={handleLogin}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 mb-4 transition"
           >
             Sign In
           </button>
-
-          {/* OR divider */}
           <div className="flex items-center justify-center mb-4">
             <hr className="w-1/3 border-gray-300" />
             <span className="mx-2 text-gray-500">OR</span>
             <hr className="w-1/3 border-gray-300" />
           </div>
-
-          {/* Google login */}
           <button
             onClick={handleGoogleLogin}
             className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-lg hover:bg-gray-100 transition"
           >
             <GoogleIcon className="mr-2" /> Sign in with Google
           </button>
-
-          {/* Sign up link */}
           <p className="text-center mt-6 text-gray-600">
             Don't have an account yet?{" "}
             <a href="/signup" className="text-blue-600 hover:underline">

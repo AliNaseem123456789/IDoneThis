@@ -20,13 +20,10 @@ export default function App() {
     <Router>
       <Layout>
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/Reminders" element={<Reminders />} />
-
-          {/* Dashboard */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/mydones" element={<MyDones />} />
           <Route path="/calendar" element={<Calender />} />

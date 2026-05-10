@@ -3,6 +3,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import api from "../api/api";
+import axios from "axios";
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

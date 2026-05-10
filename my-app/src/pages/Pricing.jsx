@@ -21,7 +21,6 @@ const PricingPage = () => {
 
   return (
     <div className="bg-white min-h-screen font-sans">
-      {/* Centered Heading Section */}
       <section className="py-20 px-6 text-center">
         <h1 className="text-6xl font-extrabold text-black mb-6 tracking-tight">
           Pricing
@@ -63,23 +62,17 @@ const PricingPage = () => {
                 </div>
               ))}
             </div>
-
-            {/* CTA Button */}
             <div className="mt-6">
               <button className="w-full bg-[#ff0000] hover:bg-red-700 text-white font-black py-5 rounded-md transition-all text-xl uppercase tracking-tight">
                 Get started
               </button>
             </div>
           </div>
-
-          {/* Bottom Trust Note */}
           <p className="text-center text-gray-400 text-sm mt-8">
             Trusted by teams at Gartner, Accenture, and thousands more.
           </p>
         </div>
       </section>
-
-      {/* FAQ / Simple Contact Section */}
       <section className="py-20 text-center bg-white">
         <h3 className="text-2xl font-bold mb-4">
           Have questions about our plans?
@@ -97,5 +90,4 @@ const PricingPage = () => {
     </div>
   );
 };
-
 export default PricingPage;

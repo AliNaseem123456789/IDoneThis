@@ -30,7 +30,6 @@ export default function HeroPricing() {
           14-day Free Trial
         </p>
       </div>
-
       {/* Value Icons */}
       <div className="flex flex-wrap gap-6 md:gap-8 py-5 border-t border-gray-100">
         <div className="flex items-center gap-2 text-sm font-bold text-black">
@@ -46,8 +45,6 @@ export default function HeroPricing() {
           <span>No Credit Card</span>
         </div>
       </div>
-
-      {/* Features List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3 py-6 border-t border-gray-100">
         {features.map((feature, index) => (
           <div key={index} className="flex items-center gap-3">
@@ -58,8 +55,6 @@ export default function HeroPricing() {
           </div>
         ))}
       </div>
-
-      {/* Primary Action */}
       <div className="mt-6">
         <button className="w-full bg-[#ff0000] hover:bg-red-700 text-white font-black py-4 rounded-md transition-all text-lg uppercase tracking-tight active:scale-[0.98]">
           Get started

@@ -1,4 +1,3 @@
-// src/components/HeroSection.js
 export default function Hero() {
   return (
     <section className="bg-[rgb(28,42,68)] text-white min-h-screen flex flex-col justify-center items-center text-center px-4">

@@ -1,6 +1,6 @@
 # Contributing to TaskFlow
 
-First off, thank you for considering contributing to TaskFlow! 🎉
+First off, thank you for considering contributing to TaskFlow!
 
 ## How Can I Contribute?
 
@@ -29,12 +29,12 @@ First off, thank you for considering contributing to TaskFlow! 🎉
 
 ### Prerequisites
 
-| Requirement      | Version   | Download                                     |
-| ---------------- | --------- | -------------------------------------------- |
-| Node.js          | v18+      | [nodejs.org](https://nodejs.org/)            |
-| Python           | 3.10+     | [python.org](https://python.org/)            |
-| Supabase Account | Free tier | [supabase.com](https://supabase.com)         |
-| Groq API Key     | Free tier | [console.groq.com](https://console.groq.com) |
+| Requirement | Version | Download |
+|-------------|---------|----------|
+| Node.js | v18+ | [nodejs.org](https://nodejs.org/) |
+| Python | 3.10+ | [python.org](https://python.org/) |
+| Supabase Account | Free tier | [supabase.com](https://supabase.com) |
+| Groq API Key | Free tier | [console.groq.com](https://console.groq.com) |
 
 ### Backend Setup
 
@@ -43,21 +43,45 @@ First off, thank you for considering contributing to TaskFlow! 🎉
 git clone https://github.com/AliNaseem123456789/IDoneThis
 cd IDoneThis/backend
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Set up environment variables
+npm install
 cp .env.example .env
 # Edit .env with your credentials
+npm run dev
 
-# Run database migrations (if any)
-# python migrate.py
-
-# Start server
-python main.py
-# Server runs at http://localhost:8000
+### AI Service
+```bash
+cd chatbot
+python main.py  
 ```
+
+### Commit Changess
+```bash
+# Backend tests
+cd backend && npm test
+
+# Frontend tests
+cd frontend && npm test
+
+# AI service tests
+cd chatbot && pytest
+```
+
+
+## Commit Types
+
+| Type | Description |
+|------|-------------|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `docs` | Documentation |
+| `style` | Formatting |
+| `refactor` | Code change |
+| `test` | Add tests |
+
+### Push & Create PR
+
+```bash
+git push origin your-branch-name
+```
+
+
