@@ -86,12 +86,12 @@ export default function Signup() {
             <span className="mx-2 text-gray-500">OR</span>
             <hr className="w-1/3 border-gray-300" />
           </div>
-          <button
+          {/* <button
             onClick={handleGoogleSignup}
             className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-lg hover:bg-gray-100 transition"
           >
             <GoogleIcon className="mr-2" /> Sign up with Google
-          </button>
+          </button> */}
           <p className="text-center mt-6 text-gray-600">
             Already have an account?
             <a href="/login" className="text-green-600 hover:underline">

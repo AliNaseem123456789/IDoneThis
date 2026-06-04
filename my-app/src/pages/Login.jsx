@@ -82,12 +82,12 @@ export default function Login() {
             <span className="mx-2 text-gray-500">OR</span>
             <hr className="w-1/3 border-gray-300" />
           </div>
-          <button
+          {/* <button
             onClick={handleGoogleLogin}
             className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-lg hover:bg-gray-100 transition"
           >
             <GoogleIcon className="mr-2" /> Sign in with Google
-          </button>
+          </button> */}
           <p className="text-center mt-6 text-gray-600">
             Don't have an account yet?{" "}
             <a href="/signup" className="text-blue-600 hover:underline">
