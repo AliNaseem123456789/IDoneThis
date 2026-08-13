@@ -4,7 +4,7 @@ import cors from "cors";
 import cron from "node-cron";
 import { supabase } from "./config/supabase.js";
 import emailProducer from "./consumers/emailProducer.js";  
-
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
@@ -12,14 +12,36 @@ import emailRoutes from "./routes/emailRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true, 
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  maxAge: 86400, // 24 hours
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); 
+// ============ ROUTES ============
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/email", emailRoutes);
 
-// Cron job - now uses RabbitMQ via emailProducer
+// ============ HEALTH CHECK (Optional) ============
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "OK", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+// ============ CRON JOB ============
 cron.schedule("* * * * *", async () => {
     const now = new Date();
     const today = now.toLocaleDateString("en-US", { weekday: "short" });

@@ -1,32 +1,45 @@
 import { useState } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
+import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import api from "../api/api";
-import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
 export default function Signup() {
+  const navigate = useNavigate();
+  const { signup } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSignup = async () => {
-    try {
-      const res = await api.post("/auth/signup", {
-        name,
-        email,
-        password,
-        role: "user",
-      });
-      alert(`Signup successful! Welcome ${res.data.user.email}`);
-    } catch (err) {
-      console.error(err.response?.data?.error || err.message);
-      alert(err.response?.data?.error || err.message);
+    setError("");
+    setLoading(true);
+
+    // Validate
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setLoading(false);
+      return;
     }
+
+    const result = await signup(name, email, password);
+
+    if (result.success) {
+      navigate("/dashboard");
+    } else {
+      setError(result.error);
+    }
+
+    setLoading(false);
   };
 
-  const handleGoogleSignup = () => {
-    alert("Google sign-up can be implemented here");
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSignup();
+    }
   };
 
   return (
@@ -46,26 +59,38 @@ export default function Signup() {
         </div>
         <div className="md:w-1/2 p-10 flex flex-col justify-center">
           <h2 className="text-3xl font-semibold mb-6">Sign Up</h2>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
           <input
             type="text"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="mb-4 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
+
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="mb-4 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
+
           <div className="relative mb-4">
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Password (min 8 characters)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
               className="w-full px-4 py-3 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <span
@@ -75,25 +100,23 @@ export default function Signup() {
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </span>
           </div>
+
           <button
             onClick={handleSignup}
-            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 mb-4 transition"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 mb-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign Up
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
+
           <div className="flex items-center justify-center mb-4">
             <hr className="w-1/3 border-gray-300" />
             <span className="mx-2 text-gray-500">OR</span>
             <hr className="w-1/3 border-gray-300" />
           </div>
-          {/* <button
-            onClick={handleGoogleSignup}
-            className="w-full border border-gray-300 flex items-center justify-center py-3 rounded-lg hover:bg-gray-100 transition"
-          >
-            <GoogleIcon className="mr-2" /> Sign up with Google
-          </button> */}
+
           <p className="text-center mt-6 text-gray-600">
-            Already have an account?
+            Already have an account?{" "}
             <a href="/login" className="text-green-600 hover:underline">
               Log In
             </a>
